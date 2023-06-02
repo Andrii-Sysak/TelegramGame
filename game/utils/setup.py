@@ -1,0 +1,47 @@
+import logging
+
+from game.bl.cell import create_cell_type
+from game.bl.region import fill_from_emoji_map
+from game.db.models import Player, Region
+from game.db import Base
+from game.db.session import eng, session, s
+from game.presets.test_region import emoji_map
+
+
+@session
+async def init_db():
+    async with eng.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
+    cells = [
+        await create_cell_type('empty', '⬜', True),
+        await create_cell_type('rock', '🪨', False)
+    ]
+    test_region = Region(name='test', x=1, y=1)
+    s.session.add_all([
+        *cells,
+    ])
+    await s.session.flush()
+    await fill_from_emoji_map(test_region, emoji_map)
+    s.session.add(test_region)
+    print('succ')
+
+
+def configure_logging():
+    root = logging.getLogger()
+    fmt = '%(asctime)s %(name)s %(levelname)s: %(message)s'
+    try:
+        import coloredlogs
+        coloredlogs.install(
+            level='INFO',
+            logger=root,
+            fmt=fmt,
+        )
+    except ModuleNotFoundError:
+        pass
+
+    logging.basicConfig(
+        level='INFO',
+        format=fmt,
+        datefmt='%H:%M:%S',
+    )

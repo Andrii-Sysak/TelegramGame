@@ -1,0 +1,13 @@
+.idea/
+**/.git
+**/.idea
+**/.venv
+**/.bash_history
+**/.python_history
+**/.pycharm_helpers
+**/.pytest_cache
+**/.mypy_cache
+**/.vscode
+
+**/*.pyc
+**/*.map
