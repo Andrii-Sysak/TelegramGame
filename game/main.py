@@ -22,7 +22,7 @@ app = web.Application()
 
 
 async def on_startup(dispatcher: Dispatcher, bot: Bot):
-    await bot.set_webhook('https://31.222.229.43:8080/webhook/main')
+    await bot.set_webhook('https://31.222.229.43:8443/webhook/main')
 
 
 def main():

@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8080"
+      - "8443"
     container_name: game-bot
     command: python3 -m game.main
     tty: true
