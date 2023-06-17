@@ -8,6 +8,8 @@ services:
       target: prod
     volumes:
       - .:/app
+    ports:
+      - "8080"
     container_name: game-bot
     command: python3 -m game.main
     tty: true
