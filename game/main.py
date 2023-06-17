@@ -23,7 +23,7 @@ app = web.Application()
 
 
 async def on_startup(dispatcher: Dispatcher, bot: Bot):
-    await bot.set_webhook('https://daa1-176-122-88-239.eu.ngrok.io/webhook/main')
+    await bot.set_webhook('https://31.222.229.43/webhook/main')
 
 
 def main():
