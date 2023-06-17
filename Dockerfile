@@ -16,4 +16,3 @@ RUN apt-get update \
 FROM base as prod
 
 COPY game game
-COPY config config

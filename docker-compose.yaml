@@ -2,25 +2,29 @@ version: '3.7'
 
 services:
   bot:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: prod
+    volumes:
+      - .:/app
     container_name: game-bot
-    ports:
-      - "8110:8080"
-    command: python3 game.main
+    command: python3 -m game.main
     tty: true
     depends_on:
       - postgres
 
   postgres:
-    container_name: user-postgres
+    container_name: bot-postgres
     image: postgres:15
     volumes:
-      - postgres_tenant_local_data:/var/lib/postgresql/data/
+      - postgres_local_data:/var/lib/postgresql/data/
     ports:
-      - "8111:5432"
+      - "5432"
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=game
 
 volumes:
-  postgres_tenant_local_data: {}
+  postgres_local_data: {}

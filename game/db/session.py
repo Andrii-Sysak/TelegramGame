@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import (
 _session = ContextVar[AsyncSession]('session', default=None)
 
 eng = create_async_engine(
-    'postgresql+psycopg://postgres:postgres@localhost:5432/postgres',
+    'postgresql+psycopg://admin:admin@bot-postgres:5432/game',
     echo=True,
     isolation_level='AUTOCOMMIT'
 )

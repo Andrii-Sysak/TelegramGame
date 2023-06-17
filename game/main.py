@@ -1,8 +1,7 @@
 import asyncio
 import logging
-from asyncio import WindowsSelectorEventLoopPolicy
+# from asyncio import WindowsSelectorEventLoopPolicy
 
-import uvicorn
 from aiohttp import web
 from aiogram import Bot, Dispatcher
 from aiogram.client.session.aiohttp import AiohttpSession
@@ -30,7 +29,7 @@ def main():
     session = AiohttpSession()
     bot = Bot(token=TOKEN, session=session)
     dp = Dispatcher()
-    asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())
+    # asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())
     dp.startup.register(on_startup)
     dp.include_router(router)
     SimpleRequestHandler(dispatcher=dp, bot=bot).register(
