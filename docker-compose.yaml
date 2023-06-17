@@ -28,6 +28,7 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=game
+    network_mode: "host"
 
 volumes:
   postgres_local_data: {}
