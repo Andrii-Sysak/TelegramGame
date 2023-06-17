@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  bot:
+    container_name: game-bot
+    ports:
+      - "8110:8080"
+    command: python3 game.main
+    tty: true
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: user-postgres
+    image: postgres:15
+    volumes:
+      - postgres_tenant_local_data:/var/lib/postgresql/data/
+    ports:
+      - "8111:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=game
+
+volumes:
+  postgres_tenant_local_data: {}
