@@ -15,8 +15,7 @@ services:
     tty: true
     depends_on:
       - postgres
-    networks:
-      - host
+    network_mode: "host"
 
   postgres:
     container_name: bot-postgres
@@ -29,8 +28,6 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=game
-    networks:
-      - host
 
 volumes:
   postgres_local_data: {}
