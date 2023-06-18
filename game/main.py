@@ -42,5 +42,5 @@ if __name__ == '__main__':
     configure_logging()
     main()
     asyncio.run(init_db())
-    web.run_app(app, host='0.0.0.0', port=8443)
+    web.run_app(app, host='0.0.0.0', port=8080)
     asyncio.run(eng.dispose())

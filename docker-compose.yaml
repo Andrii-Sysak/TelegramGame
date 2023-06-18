@@ -9,13 +9,12 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8443"
+      - "8080:8443"
     container_name: game-bot
     command: python3 -m game.main
     tty: true
     depends_on:
       - postgres
-    network_mode: "host"
 
   postgres:
     container_name: bot-postgres
@@ -28,7 +27,6 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=game
-    network_mode: "host"
 
 volumes:
   postgres_local_data: {}
