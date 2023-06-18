@@ -3,3 +3,4 @@ aiogram==3.0.0b6
 psycopg
 psycopg_binary
 coloredlogs
+flask

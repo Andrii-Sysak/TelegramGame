@@ -16,6 +16,15 @@ services:
     depends_on:
       - postgres
 
+  ssl:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: prod
+    ports:
+      - "8080:8080"
+    command: python3 -m ssl_verify.main
+  
   postgres:
     container_name: bot-postgres
     image: postgres:15
