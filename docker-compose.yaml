@@ -16,17 +16,6 @@ services:
     depends_on:
       - postgres
 
-  ssl:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-      target: prod
-    volumes:
-      - .:/app
-    ports:
-      - "80:80"
-    command: python3 ssl/main.py
-
   postgres:
     container_name: bot-postgres
     image: postgres:15
