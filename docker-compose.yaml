@@ -21,10 +21,12 @@ services:
       context: .
       dockerfile: ./Dockerfile
       target: prod
+    volumes:
+      - .:/app
     ports:
       - "8080:8080"
-    command: python3 -m ssl_verify.main
-  
+    command: python3 ssl/main.py
+
   postgres:
     container_name: bot-postgres
     image: postgres:15
