@@ -1,7 +1,14 @@
 import logging
+import os
+
+import yaml
 
 from game.bl.cell import create_cell_type
 from game.bl.region import fill_from_emoji_map
+from game.config import (
+    Config,
+    Settings,
+)
 from game.db.models import Player, Region
 from game.db import Base
 from game.db.session import eng, session, s
@@ -18,9 +25,7 @@ async def init_db():
         await create_cell_type('rock', '🪨', False)
     ]
     test_region = Region(name='test', x=1, y=1)
-    s.session.add_all([
-        *cells,
-    ])
+    s.session.add_all(cells)
     await s.session.flush()
     await fill_from_emoji_map(test_region, emoji_map)
     s.session.add(test_region)
@@ -45,3 +50,14 @@ def configure_logging():
         format=fmt,
         datefmt='%H:%M:%S',
     )
+
+
+def init_config() -> None:
+    config_path = os.environ.get('CONFIG')
+
+    with open(config_path) as stream:
+        config_content = yaml.safe_load(stream)
+
+    Config.c = Settings.parse_obj(config_content)
+
+    assert Config is not None

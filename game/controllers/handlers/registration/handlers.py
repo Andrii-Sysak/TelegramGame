@@ -6,8 +6,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from game.bl.player import create_player
-from game.controllers.reg.states import Reg
-from game.controllers.reg.utils import bg_emoji_kb
+from game.controllers.handlers.registration.states import Reg
+from game.controllers.handlers.registration.utils import bg_emoji_kb
 from game.db.session import s
 
 reg_router = Router()
@@ -15,7 +15,7 @@ reg_router = Router()
 log = logging.getLogger(__name__)
 
 
-@reg_router.message(Command(commands='start'), Reg.unregistered)
+@reg_router.message(Reg.unregistered)
 async def start_command(message: Message, state: FSMContext):
     await message.answer('ПРИВІТ ЧОРТЯКО. Я БУДУ ТЕБЕ ВЧИТИ ЖИТИ :3')
     await message.answer('АЛЕ СПЕРШУ. . .  ЯК ТЕБЕ ЗВУТЬ?')

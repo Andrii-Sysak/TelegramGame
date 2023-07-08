@@ -1,13 +1,17 @@
+import typing
+
 from sqlalchemy.orm import Mapped, relationship, mapped_column
 
 from game.db.base import Base
-from game.db.types import intpk, str50
+from game.db.types import int_pk, str50
+if typing.TYPE_CHECKING:
+    from game.db.models import Cell
 
 
 class Region(Base):
     __tablename__ = 'region'
 
-    id: Mapped[intpk]
+    id: Mapped[int_pk]
     name: Mapped[str50]
     x: Mapped[int]
     y: Mapped[int]

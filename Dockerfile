@@ -1,4 +1,4 @@
-FROM python:3.11-slim AS base
+FROM python:3.11.4-slim AS base
 
 WORKDIR /app
 
@@ -8,6 +8,7 @@ COPY requirements.txt .
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends build-essential gcc \
+    libunwind-dev libpq-dev libdw-dev\
     && rm -rf /var/lib/apt/lists/* \
     && python -m venv /opt/venv \
     && pip install --no-cache-dir --upgrade pip \
@@ -16,3 +17,4 @@ RUN apt-get update \
 FROM base as prod
 
 COPY game game
+COPY config config

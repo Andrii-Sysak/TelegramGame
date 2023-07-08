@@ -1,6 +1,7 @@
 from math import sqrt, floor
 
-from game.db.models import CellType, Cell, Region
+from game.db.models import Cell, CellType, Region
+from game.db.models.cell import CellType
 from game.db.session import s
 
 
@@ -27,4 +28,6 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
     region.map = cell_map
     region.size = size
     await s.session.flush()
+
+    return cell_map
 

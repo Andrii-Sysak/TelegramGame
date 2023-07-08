@@ -1,0 +1,26 @@
+from enum import StrEnum
+
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column,
+)
+
+from game.db import Base
+from game.db.types import int_pk
+
+
+class BackgroundCells(StrEnum):
+    default = '⬜'
+    minus = '➖'
+    dark = '◼'
+    small = '▫'
+
+
+class Soul(Base):
+    __tablename__ = 'soul'
+    id: Mapped[int_pk] = mapped_column(init=True)
+
+    view: Mapped[int] = mapped_column(default=5)
+    background_emoji: Mapped[BackgroundCells] = mapped_column(
+        default=BackgroundCells.default
+    )

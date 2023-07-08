@@ -1,5 +1,7 @@
 SQLAlchemy==2.0.0
 aiogram==3.0.0b6
+pyyaml==6.0
+pydantic-yaml==0.8.1
 psycopg
 psycopg_binary
 coloredlogs

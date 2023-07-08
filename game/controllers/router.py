@@ -1,8 +1,8 @@
 from aiogram import Router
 
-from game.controllers.movement.handlers import movement_router
-from game.controllers.reg.handlers import reg_router
-from game.controllers.session_middleware import SessionMiddleware
+from game.controllers.handlers.map.handlers import movement_router
+from game.controllers.handlers.registration.handlers import reg_router
+from game.controllers.middlewares.session_middleware import SessionMiddleware
 
 router = Router()
 router.message.outer_middleware(SessionMiddleware())

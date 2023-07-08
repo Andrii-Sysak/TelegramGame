@@ -1,6 +1,6 @@
 from sqlalchemy import select, and_
 
-from game.db.models.cell import CellType, Cell
+from game.db.models.cell import Cell, CellType
 from game.db.session import s
 
 
