@@ -1,7 +1,6 @@
 from datetime import datetime
 from enum import (
-    StrEnum,
-    auto,
+    Enum,
 )
 
 from sqlalchemy.orm import (
@@ -16,7 +15,7 @@ from game.db.types import (
 )
 
 
-class ActionBusynessLevel(StrEnum):
+class ActionBusynessLevel(Enum):
     none = 0
     low = 1
     medium = 3
