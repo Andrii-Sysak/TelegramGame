@@ -24,3 +24,9 @@ class Soul(Base):
     background_emoji: Mapped[BackgroundCells] = mapped_column(
         default=BackgroundCells.default
     )
+
+    fire_element: Mapped[int] = mapped_column(default=5)
+    water_element: Mapped[int] = mapped_column(default=5)
+    tree_element: Mapped[int] = mapped_column(default=5)
+    metal_element: Mapped[int] = mapped_column(default=5)
+    earth_element: Mapped[int] = mapped_column(default=5)

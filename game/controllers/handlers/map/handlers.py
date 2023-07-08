@@ -76,3 +76,20 @@ async def show_players_around(message: Message, player: Player) -> None:
         ),
         reply_markup=mov_keyboard.as_markup()
     )
+
+@movement_router.message(Command(commands=['profile']))
+async def show_player_profile_info(message: Message, player: Player) -> None:
+    await message.answer(
+        "Info about you: "
+        f'{player.emoji} {player.name}\n'
+        f'x-{player.x} y-{player.y}\n'
+        f'🗺 - {player.region_id}\n'
+        f'❤️ - {player.health}\n'
+        f'🗡 - {player.base_damage}\n'
+        'Elements: \n'
+        f'🔥 - {player.soul.fire_element}\n'
+        f'💧 - {player.soul.water_element}\n'
+        f'🌳 - {player.soul.tree_element}\n'
+        f'🔩 - {player.soul.metal_element}\n'
+        f'⛰ - {player.soul.earth_element}\n'
+    )
