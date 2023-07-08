@@ -30,5 +30,3 @@ class Soul(Base):
     tree_element: Mapped[int] = mapped_column(default=5)
     metal_element: Mapped[int] = mapped_column(default=5)
     earth_element: Mapped[int] = mapped_column(default=5)
-
-
