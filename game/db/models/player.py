@@ -53,3 +53,6 @@ class Player(Base):
     background_emoji: 'BackgroundCells' = association_proxy(
         'soul', 'background_emoji', init=False
     )
+
+    health: Mapped[int] = mapped_column(default=50)
+    base_damage: Mapped[int] = mapped_column(default=10)
