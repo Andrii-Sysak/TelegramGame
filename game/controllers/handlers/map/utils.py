@@ -62,6 +62,7 @@ directions = {
     '⬇️': (0, -1),
     '↘️': (1, -1),
 }
+
 mov_keyboard = ReplyKeyboardBuilder(
     [[KeyboardButton(text=dir) for dir in directions.keys()]]
 )

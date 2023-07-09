@@ -12,7 +12,7 @@ from game.config import (
 from game.db.models import Player, Region
 from game.db import Base
 from game.db.session import eng, session, s
-from game.presets.test_region import emoji_map
+from game.presets.test_region import emoji_map, ice_emoji_map
 
 
 @session
@@ -22,13 +22,26 @@ async def init_db():
         await conn.run_sync(Base.metadata.create_all)
     cells = [
         await create_cell_type('empty', '⬜', True),
-        await create_cell_type('rock', '🪨', False)
+        await create_cell_type('rock', '🪨', False),
+        await create_cell_type('portal', '⭕', True),
     ]
     test_region = Region(name='test', x=1, y=1)
     s.session.add_all(cells)
     await s.session.flush()
     await fill_from_emoji_map(test_region, emoji_map)
     s.session.add(test_region)
+
+    cells = [
+        await create_cell_type('empty', '⬜', True),
+        await create_cell_type('portal', '⭕', True),
+        await create_cell_type('portal', '🧊', True),
+    ]
+    ice_region = Region(name='test', x=1, y=2)
+    s.session.add_all(cells)
+    await s.session.flush()
+    await fill_from_emoji_map(ice_region, ice_emoji_map)
+    s.session.add(ice_region)
+
     print('succ')
 
 
