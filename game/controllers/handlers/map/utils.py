@@ -68,3 +68,6 @@ mov_keyboard = ReplyKeyboardBuilder(
 )
 
 mov_keyboard.adjust(3, 2, 3)
+
+
+teleportation = KeyboardButton(text="Телепортація")
