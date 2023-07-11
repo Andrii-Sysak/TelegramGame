@@ -69,17 +69,6 @@ async def move(message: Message, player: Player, dest: Cell, bot: Bot) -> None:
 
     map = await render_map(player)
 
-
-    # if dest.type.emoji == '⭕':
-    #     await message.answer(
-    #         f'Ви стоїте на порталі партії регіонів',
-    #     )
-    #     temp_mov_keyboard = mov_keyboard.copy()
-    #     asyncio.create_task(delay(
-    #         message.answer(map, reply_markup=temp_mov_keyboard.add(teleportation).adjust(3,2,3,1).as_markup()),
-    #         Config.c.durations.movement
-    #     ))
-    # else:
     asyncio.create_task(delay(
         message.answer(map, reply_markup=mov_keyboard.as_markup()),
         Config.c.durations.movement
