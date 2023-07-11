@@ -3,11 +3,16 @@ from math import sqrt, floor
 from game.db.models import Cell, CellType, Region
 from game.db.models.cell import CellType
 from game.db.session import s
-
+from sqlalchemy import select
 
 async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
-    rock = await s.session.get(CellType, 2)
-    void = await s.session.get(CellType, 1)
+    emojis = {
+        cell.emoji: cell
+        for cell in
+        (await s.session.scalars(
+            select(CellType).where(CellType.emoji.in_(set(emoji_map)))
+        )).all()
+    }
     emoji_map = emoji_map.replace('\n', '')
     size = int(sqrt(len(emoji_map)))
     cell_map = []
@@ -18,11 +23,7 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
             region_id=1,
             x=x,
             y=y,
-            cell_type_id=(
-                rock.id
-                if emoji == '🪨'
-                else void.id
-            )
+            cell_type_id=emojis[emoji].id
         ))
 
     region.map = cell_map
@@ -30,4 +31,3 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
     await s.session.flush()
 
     return cell_map
-

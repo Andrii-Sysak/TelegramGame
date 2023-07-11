@@ -5,7 +5,7 @@ from aiogram.types import Message
 from sqlalchemy import select
 
 from game.controllers.handlers.map.utils import directions
-from game.db.models import Player, Cell
+from game.db.models import Player, Cell, Region
 from game.db.models.actions import Action
 from game.db.session import s
 
@@ -33,5 +33,19 @@ async def movement(
             (player.region_id, player.x + dir[0], player.y + dir[1])
         )
         return {'dest': cell}
+
+    return False
+
+async def teleporting(
+    message: Message, player: Player
+) -> Literal[False] | dict[str, Cell]:
+    if message.text in directions.keys():
+        dir = directions[message.text]
+        cell = await s.session.get(
+            Cell,
+            (player.region_id, player.x + dir[0], player.y + dir[1])
+        )
+        if cell.type.emoji == '⭕':
+            return {'portal' : cell}
 
     return False

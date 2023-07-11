@@ -24,7 +24,7 @@ async def create_player(id: int, name: str, bgc: str) -> Player:
     return player
 
 
-async def move_player(player: Player, x: int, y: int) -> Player:
+async def move_player(player: Player, x: int, y: int, region_id: int) -> Player:
     action = Action(
         player_id=player.id,
         start_date=datetime.utcnow(),
@@ -35,6 +35,7 @@ async def move_player(player: Player, x: int, y: int) -> Player:
     s.session.add(action)
     player.x = x
     player.y = y
+    player.region_id = region_id
     await s.session.flush()
 
     t = asyncio.create_task(delay(

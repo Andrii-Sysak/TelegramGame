@@ -62,8 +62,15 @@ directions = {
     '⬇️': (0, -1),
     '↘️': (1, -1),
 }
+
 mov_keyboard = ReplyKeyboardBuilder(
     [[KeyboardButton(text=dir) for dir in directions.keys()]]
 )
 
 mov_keyboard.adjust(3, 2, 3)
+
+teleportation = KeyboardButton(text="Телепортація")
+
+regions_list = ReplyKeyboardBuilder(
+    [[KeyboardButton(text="Повернутись↩️")]]
+)
