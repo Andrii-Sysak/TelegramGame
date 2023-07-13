@@ -20,11 +20,12 @@ from game.controllers.handlers.map.utils import (
     render_map,
     mov_keyboard,
     teleportation,
-    regions_list
+    regions_list,
+    arrival_to_the_cell
 )
 
 from game.db.models import Player, Cell, Region
-from game.db.models.actions import Action
+from game.db.models.action import Action
 from game.db.session import s
 from game.utils.delay import delay
 
@@ -67,17 +68,10 @@ async def move(message: Message, player: Player, dest: Cell, bot: Bot) -> None:
         f'Чудово! Через {Config.c.durations.movement} секунд будеш на місці'
     )
 
-    map = await render_map(player)
-
-    asyncio.create_task(delay(
-        message.answer(map, reply_markup=mov_keyboard.as_markup()),
+    await asyncio.create_task(delay(
+        arrival_to_the_cell(player, dest, message),
         Config.c.durations.movement
     ))
-
-
-
-
-
 
 
 @movement_router.message(Command(commands=['map']))
@@ -103,6 +97,7 @@ async def show_players_around(message: Message, player: Player) -> None:
         ),
         reply_markup=mov_keyboard.as_markup()
     )
+
 
 @movement_router.message(Command(commands=['profile']))
 async def show_player_profile_info(message: Message, player: Player) -> None:

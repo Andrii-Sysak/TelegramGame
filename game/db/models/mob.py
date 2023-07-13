@@ -27,10 +27,11 @@ class Mob(Base):
     health: Mapped[int] = mapped_column(default=50)
     bade_damage: Mapped[int] = mapped_column(default=10)
 
-    cells: Mapped[list[CellType]] = relationship(
+    cells: Mapped[list['CellType']] = relationship(
         secondary='mob__cell_type',
         init=False,
-        viewonly=True
+        viewonly=True,
+        lazy='noload'
     )
 
 
@@ -41,9 +42,9 @@ class Mob2CellType(Base):
     )
 
     mob_id: Mapped[mob_fk] = mapped_column(primary_key=True, init=False)
-    mob: Mapped[Mob] = relationship()
+    mob: Mapped[Mob] = relationship(lazy='joined')
     cell_type_id: Mapped[cell_type_fk] = mapped_column(
         primary_key=True, init=False
     )
-    cell_type: Mapped['CellType'] = relationship()
+    cell_type: Mapped['CellType'] = relationship(lazy='joined')
     rate: Mapped[int] = mapped_column(default=50)

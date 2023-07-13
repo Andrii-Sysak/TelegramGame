@@ -1,5 +1,7 @@
 from math import sqrt, floor
 
+from sqlalchemy import select
+
 from game.db.models import Cell, CellType, Region
 from game.db.models.cell import CellType
 from game.db.session import s

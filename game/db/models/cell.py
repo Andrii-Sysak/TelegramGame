@@ -17,7 +17,11 @@ class CellType(Base):
     id: Mapped[int_pk]
     slug: Mapped[str50]
     emoji: Mapped[str50]
-    passable: Mapped[bool]
+    passable: Mapped[bool] = mapped_column(default=False)
+    transparent: Mapped[bool] = mapped_column(default=False)
+
+    def __hash__(self):
+        return hash(self.id)
 
 
 class Cell(Base):

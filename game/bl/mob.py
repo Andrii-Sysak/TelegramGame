@@ -1,6 +1,7 @@
 from random import randint
 
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 
 from game.db.models import CellType
 from game.db.models.mob import (
@@ -23,13 +24,13 @@ async def create_mob(name: str, emoji: str, cells: dict[CellType, int]) -> Mob:
 
 async def generate_mob(cell: CellType) -> Mob | None:
     mobs = (await s.session.scalars(
-        select(Mob, Mob2CellType.rate)
-        .where(Mob.cells.contains(cell))
+        select(Mob2CellType)
+        .where(Mob2CellType.cell_type == cell)
         .order_by(Mob2CellType.rate)
     )).all()
 
     chance = randint(0, 100)
-    for mob, rate in mobs:
-        if rate >= chance:
-            return  mob
+    for mob in mobs:
+        if mob.rate >= chance:
+            return mob.mob
     return None

@@ -4,8 +4,15 @@ from game.db.models.cell import Cell, CellType
 from game.db.session import s
 
 
-async def create_cell_type(slug: str, emoji: str, passable: bool) -> CellType:
-    cell = CellType(slug=slug, emoji=emoji, passable=passable)
+async def create_cell_type(
+    slug: str,
+    emoji: str,
+    passable: bool,
+    transparent: bool = False
+) -> CellType:
+    cell = CellType(
+        slug=slug, emoji=emoji, passable=passable, transparent=transparent
+    )
     s.session.add(cell)
 
     return cell

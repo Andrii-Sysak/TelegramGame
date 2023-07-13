@@ -1,11 +1,41 @@
 from math import floor
 
-from aiogram.types import KeyboardButton
+from aiogram.types import (
+    KeyboardButton,
+    Message,
+)
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 from game.bl.cell import get_cells_around
-from game.db.models import Player, Cell
+from game.bl.mob import generate_mob
+from game.db.models import (
+    Player,
+    Cell,
+    Region,
+)
 from game.db.session import s
+
+directions = {
+    '↖️': (-1, 1),
+    '⬆️': (0, 1),
+    '↗️': (1, 1),
+    '⬅️': (-1, 0),
+    '➡️': (1, 0),
+    '↙️': (-1, -1),
+    '⬇️': (0, -1),
+    '↘️': (1, -1),
+}
+mov_keyboard = ReplyKeyboardBuilder(
+    [[KeyboardButton(text=dir) for dir in directions.keys()]]
+)
+
+mov_keyboard.adjust(3, 2, 3)
+
+teleportation = KeyboardButton(text="Телепортація")
+
+regions_list = ReplyKeyboardBuilder(
+    [[KeyboardButton(text="Повернутись↩️")]]
+)
 
 
 async def render_map(player: Player):
@@ -52,25 +82,18 @@ async def render_map(player: Player):
     )
 
 
-directions = {
-    '↖️': (-1, 1),
-    '⬆️': (0, 1),
-    '↗️': (1, 1),
-    '⬅️': (-1, 0),
-    '➡️': (1, 0),
-    '↙️': (-1, -1),
-    '⬇️': (0, -1),
-    '↘️': (1, -1),
-}
+async def arrival_to_the_cell(
+    player: Player, cell: Cell, message: Message
+) -> None:
+    map = await render_map(player)
 
-mov_keyboard = ReplyKeyboardBuilder(
-    [[KeyboardButton(text=dir) for dir in directions.keys()]]
-)
+    # TODO: move to bl
+    mob = await generate_mob(cell.type)
+    if mob:
+        map += (
+            f'\n\nТо пезда, тобі трапився:\n '
+            f'{mob.emoji} {mob.name}: ❤️ {mob.health} 🗡  {mob.bade_damage}'
+            )
 
-mov_keyboard.adjust(3, 2, 3)
+    await message.answer(map, reply_markup=mov_keyboard.as_markup())
 
-teleportation = KeyboardButton(text="Телепортація")
-
-regions_list = ReplyKeyboardBuilder(
-    [[KeyboardButton(text="Повернутись↩️")]]
-)

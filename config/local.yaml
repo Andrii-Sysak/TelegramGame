@@ -3,4 +3,4 @@ token: '5929763272:AAGI1TK3zXbqzBy7yJ96hLO5Cih52YBJbiw'
 updates_strategy: 'polling'
 
 durations:
-  movement: 3
+  movement: 2

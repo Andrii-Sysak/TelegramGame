@@ -6,7 +6,7 @@ from sqlalchemy import select
 
 from game.controllers.handlers.map.utils import directions
 from game.db.models import Player, Cell, Region
-from game.db.models.actions import Action
+from game.db.models.action import Action
 from game.db.session import s
 
 
