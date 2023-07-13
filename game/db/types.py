@@ -13,7 +13,7 @@ region_fk = Annotated[int, mapped_column(
     ForeignKey('region.id', ondelete='CASCADE')
 )]
 cell_type_fk = Annotated[int, mapped_column(
-    ForeignKey('cell_type.id', ondelete='CASCADE')
+    ForeignKey('cell_type.slug', ondelete='CASCADE')
 )]
 soul_fk = Annotated[int, mapped_column(
     ForeignKey('soul.id', ondelete='CASCADE')

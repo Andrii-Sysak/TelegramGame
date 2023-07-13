@@ -75,11 +75,6 @@ async def move(message: Message, player: Player, dest: Cell, bot: Bot) -> None:
     ))
 
 
-
-
-
-
-
 @movement_router.message(Command(commands=['map']))
 async def show_map(message: Message, player: Player) -> None:
     msg = await render_map(player)

@@ -14,8 +14,8 @@ from game.db.types import (
 class CellType(Base):
     __tablename__ = 'cell_type'
 
-    id: Mapped[int_pk]
-    slug: Mapped[str50]
+    # id: Mapped[int_pk]
+    slug: Mapped[str50] = mapped_column(primary_key=True)
     emoji: Mapped[str50]
     passable: Mapped[bool]
 
@@ -28,7 +28,7 @@ class Cell(Base):
     )
     x: Mapped[int_pk] = mapped_column(init=True)
     y: Mapped[int_pk] = mapped_column(init=True)
-    cell_type_id: Mapped[cell_type_fk]
+    cell_type_slug: Mapped[cell_type_fk]
 
     type: Mapped[CellType] = relationship(lazy='joined', init=False)
 

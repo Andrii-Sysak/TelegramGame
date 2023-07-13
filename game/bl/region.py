@@ -23,7 +23,7 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
             region_id=1,
             x=x,
             y=y,
-            cell_type_id=emojis[emoji].id
+            cell_type_slug=emojis[emoji].slug
         ))
 
     region.map = cell_map

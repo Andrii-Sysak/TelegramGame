@@ -45,7 +45,7 @@ async def teleporting(
             Cell,
             (player.region_id, player.x + dir[0], player.y + dir[1])
         )
-        if cell.type.emoji == '⭕':
+        if 'portal' in cell.type.slug:
             return {'portal' : cell}
 
     return False
