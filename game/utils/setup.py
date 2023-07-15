@@ -25,6 +25,7 @@ async def init_db():
         await create_cell_type('rock', '🪨', False),
         await create_cell_type('portal', '⭕', True),
         await create_cell_type('ice', '🧊', False),
+        await create_cell_type('sauron_eye', '⭕', False)
     ]
     s.session.add_all(cells)
     await s.session.flush()
