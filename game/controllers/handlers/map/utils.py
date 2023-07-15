@@ -1,19 +1,14 @@
+import typing as t
 from math import floor
 
-from aiogram.types import (
-    KeyboardButton,
-    Message,
-)
+from aiogram.types import KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 from game.bl.cell import get_cells_around
-from game.bl.mob import generate_mob
 from game.db.models import (
-    Player,
     Cell,
-    Region,
+    Player
 )
-from game.db.session import s
 
 directions = {
     '↖️': (-1, 1),
@@ -38,7 +33,14 @@ regions_list = ReplyKeyboardBuilder(
 )
 
 
-async def render_map(player: Player):
+class UndefinedRegionSizeError(Exception):
+    pass
+
+
+async def render_map(player: Player) -> str:
+    if player.region.size is None:
+        raise UndefinedRegionSizeError("Player's region has no size")
+
     border = floor(player.region.size / 2)
 
     x_shift = (
@@ -52,12 +54,12 @@ async def render_map(player: Player):
         if abs(player.y) + player.view > border else 0
     )
 
-    _cells = await get_cells_around(
+    _cells = t.cast(t.MutableSequence[Cell | Player], await get_cells_around(
         player.region_id,
         player.x - x_shift,
         player.y - y_shift,
         player.view
-    )
+    ))
     _cells[
         floor(len(_cells) / 2)
         + x_shift
@@ -80,20 +82,3 @@ async def render_map(player: Player):
     return '\n'.join(
         cells[i:i + chunk_size] for i in range(0, chunk, chunk_size)
     )
-
-
-async def arrival_to_the_cell(
-    player: Player, cell: Cell, message: Message
-) -> None:
-    map = await render_map(player)
-
-    # TODO: move to bl
-    mob = await generate_mob(cell.type)
-    if mob:
-        map += (
-            f'\n\nТо пезда, тобі трапився:\n '
-            f'{mob.emoji} {mob.name}: ❤️ {mob.health} 🗡  {mob.bade_damage}'
-            )
-
-    await message.answer(map, reply_markup=mov_keyboard.as_markup())
-

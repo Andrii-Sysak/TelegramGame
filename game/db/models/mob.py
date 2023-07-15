@@ -3,17 +3,18 @@ from typing import TYPE_CHECKING
 from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import (
     Mapped,
-    mapped_column,
     relationship,
+    mapped_column
 )
 
-from game.db import Base
+from game.db.base import Base
 from game.db.types import (
-    int_pk,
     str50,
+    int_pk,
     mob_fk,
-    cell_type_fk,
+    cell_type_fk
 )
+
 if TYPE_CHECKING:
     from game.db.models import CellType
 
@@ -21,9 +22,9 @@ if TYPE_CHECKING:
 class Mob(Base):
     __tablename__ = 'mob'
 
-    id: Mapped[int_pk]
-    name: Mapped[str50]
-    emoji: Mapped[str50]
+    id: Mapped[int_pk] = mapped_column(init=False)
+    name: Mapped[str50] = mapped_column()
+    emoji: Mapped[str50] = mapped_column()
     health: Mapped[int] = mapped_column(default=50)
     bade_damage: Mapped[int] = mapped_column(default=10)
 

@@ -1,6 +1,6 @@
 from enum import (
     StrEnum,
-    auto,
+    auto
 )
 
 from pydantic_yaml import YamlModel

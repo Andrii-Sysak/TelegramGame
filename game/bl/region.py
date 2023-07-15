@@ -1,11 +1,17 @@
-from math import sqrt, floor
+from math import (
+    sqrt,
+    floor
+)
 
 from sqlalchemy import select
 
-from game.db.models import Cell, CellType, Region
-from game.db.models.cell import CellType
+from game.db.models import (
+    Cell,
+    Region,
+    CellType
+)
 from game.db.session import s
-from sqlalchemy import select
+
 
 async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
     emojis = {

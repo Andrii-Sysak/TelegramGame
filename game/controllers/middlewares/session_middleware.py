@@ -1,21 +1,28 @@
-from typing import Callable, Any, Awaitable
+import typing as t
 
 from aiogram import BaseMiddleware
-from aiogram.types import Message
 from sqlalchemy import select
+from aiogram.types import (
+    Message,
+    TelegramObject
+)
 
-from game.controllers.handlers.registration.states import Reg
 from game.db.models import Player
 from game.db.session import s
+from game.controllers.handlers.registration.states import Reg
 
 
 class SessionMiddleware(BaseMiddleware):
     async def __call__(
         self,
-        handler: Callable[[Message, dict[str, Any]], Awaitable[Any]],
-        event: Message,
-        data: dict[str, Any]
+        handler: t.Callable[[Message, dict[str, t.Any]], t.Awaitable[t.Any]],
+        event: TelegramObject,
+        data: dict[str, t.Any]
     ) -> None:
+        if not isinstance(event, Message):
+            raise NotImplementedError(
+                f'Expected Message event type; Got: {type(event)}'
+            )
         s.session = s.maker()
         player = await s.session.scalar(
             select(Player)
