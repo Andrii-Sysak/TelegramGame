@@ -1,37 +1,17 @@
 from math import sqrt, floor
 import re
 
-from game.db.models import Cell, CellType, Region
+from game.db.models import (
+    Cell,
+    CellType,
+    Region
+)
 from game.db.models.cell import CellType
 from game.db.session import s
-from sqlalchemy import select, or_
-
-# async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
-#     emojis = {
-#         cell.emoji: cell
-#         for cell in
-#         (await s.session.scalars(
-#             select(CellType).where(CellType.emoji.in_(set(emoji_map)))
-#         )).all()
-#     }
-#     emoji_map = emoji_map.replace('\n', '')
-#     size = int(sqrt(len(emoji_map)))
-#     cell_map = []
-#     for index, emoji in enumerate(emoji_map):
-#         y = floor(size / 2) - index // size
-#         x = -floor(size / 2) + index % size
-#         cell_map.append(Cell(
-#             region_id=1,
-#             x=x,
-#             y=y,
-#             cell_type_slug=emojis[emoji].slug
-#         ))
-#
-#     region.map = cell_map
-#     region.size = size
-#     await s.session.flush()
-#
-#     return cell_map
+from sqlalchemy import (
+    select,
+    or_
+)
 
 
 async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
@@ -44,19 +24,13 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
         condition_emoji,
         condition_slug
     ))
-
     results = await s.session.execute(query)
     slugs = {cell.slug: cell for cell in results.scalars().all()}
-    print('------------------------------------', slugs)
 
-    map_list = convert_emoji_to_slug_map(emoji_map_list, slugs)
-
-    size = int(sqrt(len(emoji_map_list)))
+    emoji_map_slugs = convert_emoji_to_slug_map(emoji_map_list, slugs)
+    size = int(sqrt(len(emoji_map_slugs)))
     cell_map = []
-
-
-    print('----------------------------------\n', set(emoji_map_list), set(map_list), '\n-----------------------------')
-    for index, slug in enumerate(map_list):
+    for index, slug in enumerate(emoji_map_slugs):
         y = floor(size / 2) - index // size
         x = -floor(size / 2) + index % size
         cell_map.append(Cell(
@@ -76,20 +50,11 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
 def made_list_map_from_string(emoji_map: str) -> list[str]:
     pattern = r"\[([^\]]+)\]|(\S)"
     matches = re.findall(pattern, emoji_map)
-    result = [match[0] if match[0] else match[1] for match in matches]
-    return result
+    emoji_map_list = [match[0] if match[0] else match[1] for match in matches]
+    return emoji_map_list
 
 
 def convert_emoji_to_slug_map(emoji_map_list: list, slugs: dict) -> list[str]:
-    cell_slugs = {}
-    for cell in slugs.values():
-        cell_slugs[cell.emoji] = cell.slug
-
-    result = []
-    for cell in emoji_map_list:
-        if len(cell) == 1:
-            result.append(cell_slugs[cell])
-        else:
-            result.append(cell)
-
-    return result
+    cell_slugs = {cell.emoji: cell.slug for cell in slugs.values()}
+    emoji_map_slugs = [cell_slugs[cell] if len(cell) == 1 else cell for cell in emoji_map_list]
+    return emoji_map_slugs
