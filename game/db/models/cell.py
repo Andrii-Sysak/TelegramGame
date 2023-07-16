@@ -14,7 +14,6 @@ from game.db.types import (
 class CellType(Base):
     __tablename__ = 'cell_type'
 
-    # id: Mapped[int_pk]
     slug: Mapped[str50] = mapped_column(primary_key=True)
     emoji: Mapped[str50]
     passable: Mapped[bool] = mapped_column(default=False)

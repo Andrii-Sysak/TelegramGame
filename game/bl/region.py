@@ -14,18 +14,22 @@ from sqlalchemy import (
     or_
 )
 
+
 async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
     emoji_map_list = made_list_map_from_string(emoji_map)
 
     condition_emoji = CellType.emoji.in_(set(emoji_map_list))
     condition_slug = CellType.slug.in_(set(emoji_map_list))
 
-    query = select(CellType).where(or_(
-        condition_emoji,
-        condition_slug
-    ))
-    results = await s.session.execute(query)
-    slugs = {cell.slug: cell for cell in results.scalars().all()}
+    results = (await s.session.scalars(
+        select(CellType)
+        .where(or_(
+            condition_emoji,
+            condition_slug
+        ))
+    )).all()
+
+    slugs = {cell.slug: cell for cell in results}
 
     emoji_map_slugs = convert_emoji_to_slug_map(emoji_map_list, slugs)
     size = int(sqrt(len(emoji_map_slugs)))
@@ -47,14 +51,15 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
     return cell_map
 
 
+PATTERN = r"\[([^\]]+)\]|(\S)"
 def made_list_map_from_string(emoji_map: str) -> list[str]:
-    pattern = r"\[([^\]]+)\]|(\S)"
-    matches = re.findall(pattern, emoji_map)
+    matches = re.findall(PATTERN, emoji_map)
     emoji_map_list = [match[0] if match[0] else match[1] for match in matches]
     return emoji_map_list
 
 
 def convert_emoji_to_slug_map(emoji_map_list: list, slugs: dict) -> list[str]:
     cell_slugs = {cell.emoji: cell.slug for cell in slugs.values()}
-    emoji_map_slugs = [cell_slugs[cell] if len(cell) == 1 else cell for cell in emoji_map_list]
+    emoji_map_slugs = [cell_slugs[cell] if not cell.isalpha() else cell
+                       for cell in emoji_map_list]
     return emoji_map_slugs
