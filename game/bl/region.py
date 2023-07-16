@@ -51,9 +51,11 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
     return cell_map
 
 
-PATTERN = r"\[([^\]]+)\]|(\S)"
+EMOJI_MAP_SLUG_PATTERN = r"\[([^\]]+)\]|(\S)"
+
+
 def made_list_map_from_string(emoji_map: str) -> list[str]:
-    matches = re.findall(PATTERN, emoji_map)
+    matches = re.findall(EMOJI_MAP_SLUG_PATTERN, emoji_map)
     emoji_map_list = [match[0] if match[0] else match[1] for match in matches]
     return emoji_map_list
 
