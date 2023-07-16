@@ -4,6 +4,7 @@ import os
 import yaml
 
 from game.bl.cell import create_cell_type
+from game.bl.mob import create_mob
 from game.bl.region import fill_from_emoji_map
 from game.config import (
     Config,
@@ -24,17 +25,23 @@ async def init_db():
         await create_cell_type('empty', '⬜', True),
         await create_cell_type('rock', '🪨', False),
         await create_cell_type('portal', '⭕', True),
-        await create_cell_type('ice', '🧊', False),
-        await create_cell_type('sauron_eye', '⭕', False)
+        await create_cell_type('ice', '🧊', True),
+        await create_cell_type('plains', '🦗', True, True),
     ]
+    mobs = [
+        await create_mob('wolf', '🐺', {cells[0]: 10, cells[1]: 90}),
+        await create_mob('bear', '🐻', {cells[0]: 50, cells[1]: 10})
+    ]
+
     s.session.add_all(cells)
+    s.session.add_all(mobs)
     await s.session.flush()
 
     test_region = Region(name='test', x=1, y=1)
     await fill_from_emoji_map(test_region, emoji_map)
     s.session.add(test_region)
 
-    ice_region = Region(name='test', x=1, y=2)
+    ice_region = Region(name='ice_map', x=1, y=2)
     await fill_from_emoji_map(ice_region, ice_emoji_map)
     s.session.add(ice_region)
 

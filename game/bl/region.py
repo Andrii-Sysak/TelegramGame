@@ -6,13 +6,13 @@ from game.db.models import (
     CellType,
     Region
 )
+
 from game.db.models.cell import CellType
 from game.db.session import s
 from sqlalchemy import (
     select,
     or_
 )
-
 
 async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
     emoji_map_list = made_list_map_from_string(emoji_map)

@@ -6,7 +6,7 @@ from sqlalchemy import select
 
 from game.controllers.handlers.map.utils import directions
 from game.db.models import Player, Cell, Region
-from game.db.models.actions import Action
+from game.db.models.action import Action
 from game.db.session import s
 
 
@@ -45,7 +45,7 @@ async def teleporting(
             Cell,
             (player.region_id, player.x + dir[0], player.y + dir[1])
         )
-        if 'portal' in cell.type.slug:
+        if cell.type.emoji == '⭕':
             return {'portal' : cell}
 
     return False

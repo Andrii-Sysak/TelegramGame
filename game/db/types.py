@@ -21,3 +21,6 @@ soul_fk = Annotated[int, mapped_column(
 player_fk = Annotated[int, mapped_column(
     ForeignKey('player.id', ondelete='CASCADE')
 )]
+mob_fk = Annotated[int, mapped_column(
+    ForeignKey('mob.id', ondelete='CASCADE')
+)]

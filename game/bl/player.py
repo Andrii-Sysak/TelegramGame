@@ -11,7 +11,7 @@ from game.db.models import (
     Player,
     Soul,
 )
-from game.db.models.actions import Action
+from game.db.models.action import Action
 from game.db.session import s
 from game.utils.delay import delay
 
