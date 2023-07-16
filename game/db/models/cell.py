@@ -14,14 +14,13 @@ from game.db.types import (
 class CellType(Base):
     __tablename__ = 'cell_type'
 
-    id: Mapped[int_pk]
-    slug: Mapped[str50]
+    slug: Mapped[str50] = mapped_column(primary_key=True)
     emoji: Mapped[str50]
     passable: Mapped[bool] = mapped_column(default=False)
     transparent: Mapped[bool] = mapped_column(default=False)
 
     def __hash__(self):
-        return hash(self.id)
+        return hash(self.slug)
 
 
 class Cell(Base):
@@ -32,7 +31,7 @@ class Cell(Base):
     )
     x: Mapped[int_pk] = mapped_column(init=True)
     y: Mapped[int_pk] = mapped_column(init=True)
-    cell_type_id: Mapped[cell_type_fk]
+    cell_type_slug: Mapped[cell_type_fk]
 
     type: Mapped[CellType] = relationship(lazy='joined', init=False)
 

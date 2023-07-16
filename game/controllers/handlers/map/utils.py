@@ -96,4 +96,3 @@ async def arrival_to_the_cell(
             )
 
     await message.answer(map, reply_markup=mov_keyboard.as_markup())
-

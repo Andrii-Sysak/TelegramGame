@@ -25,27 +25,23 @@ async def init_db():
         await create_cell_type('empty', '⬜', True),
         await create_cell_type('rock', '🪨', False),
         await create_cell_type('portal', '⭕', True),
+        await create_cell_type('ice', '🧊', True),
         await create_cell_type('plains', '🦗', True, True),
     ]
     mobs = [
         await create_mob('wolf', '🐺', {cells[0]: 10, cells[1]: 90}),
         await create_mob('bear', '🐻', {cells[0]: 50, cells[1]: 10})
     ]
-    test_region = Region(name='test', x=1, y=1)
+
     s.session.add_all(cells)
     s.session.add_all(mobs)
     await s.session.flush()
+
+    test_region = Region(name='test', x=1, y=1)
     await fill_from_emoji_map(test_region, emoji_map)
     s.session.add(test_region)
 
-    cells = [
-        await create_cell_type('empty', '⬜', True),
-        await create_cell_type('portal', '⭕', True),
-        await create_cell_type('portal', '🧊', True),
-    ]
-    ice_region = Region(name='test', x=1, y=2)
-    s.session.add_all(cells)
-    await s.session.flush()
+    ice_region = Region(name='ice_map', x=1, y=2)
     await fill_from_emoji_map(ice_region, ice_emoji_map)
     s.session.add(ice_region)
 

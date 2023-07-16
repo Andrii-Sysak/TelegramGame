@@ -6,7 +6,7 @@ from aiogram import (
     Bot,
 )
 from aiogram.filters import Command
-from aiogram.types import Message, KeyboardButton
+from aiogram.types import Message
 from sqlalchemy import select
 
 from game.bl.player import move_player
@@ -67,7 +67,6 @@ async def move(message: Message, player: Player, dest: Cell, bot: Bot) -> None:
     await message.answer(
         f'Чудово! Через {Config.c.durations.movement} секунд будеш на місці'
     )
-
     await asyncio.create_task(delay(
         arrival_to_the_cell(player, dest, message),
         Config.c.durations.movement
