@@ -1,14 +1,13 @@
 from random import randint
 
 from sqlalchemy import select
-from sqlalchemy.orm import joinedload
 
 from game.db.models import CellType
+from game.db.session import s
 from game.db.models.mob import (
     Mob,
-    Mob2CellType,
+    Mob2CellType
 )
-from game.db.session import s
 
 
 async def create_mob(name: str, emoji: str, cells: dict[CellType, int]) -> Mob:

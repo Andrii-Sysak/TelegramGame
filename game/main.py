@@ -1,38 +1,41 @@
 import asyncio
 import logging
 
+from aiogram import (
+    Bot,
+    Dispatcher
+)
 from aiohttp import web
-from aiogram import Bot, Dispatcher
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.webhook.aiohttp_server import (
     SimpleRequestHandler,
-    setup_application,
+    setup_application
 )
 
 from game.config import (
     Config,
-    UpdateStrategy,
+    UpdateStrategy
 )
-from game.controllers.router import router
 from game.db.session import eng
 from game.utils.setup import (
     init_db,
-    configure_logging,
     init_config,
+    configure_logging
 )
+from game.controllers.router import router
 
 logging.basicConfig(level=logging.INFO)
 
 app = web.Application()
 
 
-async def on_startup(dispatcher: Dispatcher, bot: Bot):
+async def on_startup(dispatcher: Dispatcher, bot: Bot) -> None:
     await bot.delete_webhook(drop_pending_updates=True)
     if Config.c.updates_strategy is UpdateStrategy.webhook:
         await bot.set_webhook('https://31.222.229.43/webhook/main')
 
 
-def main():
+def main() -> None:
     init_config()
     session = AiohttpSession()
     bot = Bot(token=Config.c.token, session=session)

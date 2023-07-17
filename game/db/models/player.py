@@ -1,26 +1,35 @@
-import enum
 from typing import (
     TYPE_CHECKING,
-    Optional,
+    Optional
 )
 
 from sqlalchemy import (
-    ForeignKey,
     Index,
-    CheckConstraint,
+    CheckConstraint
 )
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import (
+    Mapped,
+    relationship,
+    mapped_column
+)
+from sqlalchemy.ext.associationproxy import (
+    AssociationProxy,
+    association_proxy
+)
 
 from game.db.base import Base
 from game.db.types import (
     str50,
     int_pk,
-    region_fk,
     soul_fk,
+    region_fk
 )
+
 if TYPE_CHECKING:
-    from game.db.models import Region, Soul
+    from game.db.models import (
+        Soul,
+        Region
+    )
     from game.db.models.soul import BackgroundCells
 
 
@@ -31,8 +40,8 @@ class Player(Base):
         CheckConstraint('busyness_capacity < 18')
     )
 
-    id: Mapped[int_pk]
-    name: Mapped[str50]
+    name: Mapped[str50] = mapped_column()
+    id: Mapped[int_pk] = mapped_column(init=False)
 
     soul: Mapped[Optional['Soul']] = relationship(lazy='joined')
     soul_id: Mapped[soul_fk] = mapped_column(
@@ -49,8 +58,8 @@ class Player(Base):
 
     region: Mapped['Region'] = relationship(lazy='joined', init=False)
 
-    view: int = association_proxy('soul', 'view', init=False)
-    background_emoji: 'BackgroundCells' = association_proxy(
+    view: AssociationProxy[int] = association_proxy('soul', 'view', init=False)
+    background_emoji: AssociationProxy['BackgroundCells'] = association_proxy(
         'soul', 'background_emoji', init=False
     )
 

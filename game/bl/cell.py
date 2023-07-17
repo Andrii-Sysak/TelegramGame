@@ -1,7 +1,13 @@
-from sqlalchemy import select, and_
+from sqlalchemy import (
+    and_,
+    select
+)
 
-from game.db.models.cell import Cell, CellType
 from game.db.session import s
+from game.db.models.cell import (
+    Cell,
+    CellType
+)
 
 
 async def create_cell_type(
@@ -32,4 +38,4 @@ async def get_cells_around(
         .order_by(Cell.y.desc(), Cell.x.asc())
     )
 
-    return res.all()
+    return list(res.all())

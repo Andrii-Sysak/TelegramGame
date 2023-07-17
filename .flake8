@@ -1,0 +1,25 @@
+[flake8]
+
+max-line-length = 80
+show-source = True
+suppress_none_returning = True
+
+ignore = E711, W503, W504
+
+per-file-ignores =
+  game/db/models/*:E704
+  game/db/models/__init__.py:F401
+
+
+exclude =
+  .git
+  .idea
+  .venv
+  .pycharm_helpers
+  proto
+  *.txt
+  *.ini
+  *.json
+  *_pb2.py
+  *_pb2_grpc.py
+  game/presets

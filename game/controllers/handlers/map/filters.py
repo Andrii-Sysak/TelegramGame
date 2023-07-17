@@ -1,51 +1,34 @@
-from datetime import datetime
 from typing import Literal
 
 from aiogram.types import Message
-from sqlalchemy import select
+from aiogram.filters import Filter
 
-from game.controllers.handlers.map.utils import directions
-from game.db.models import Player, Cell, Region
-from game.db.models.action import Action
+from game.db.models import (
+    Cell,
+    Player
+)
 from game.db.session import s
+from game.db.presets.base import CellType
+from game.controllers.handlers.map.utils import directions
 
 
-async def in_action(
-    message: Message, player: Player
-) -> Literal[False] | dict[str, Action]:
-    action = await s.session.scalar(
-        select(Action)
-        .where(Action.player_id == player.id)
-        .where(Action.end_date > datetime.utcnow())
-    )
-    if action:
-        return {'action': action}
-    return False
+class MovementFilter(Filter):
+    def __init__(self, cell_type: CellType | None = None):
+        self.cell_type = cell_type
 
+    async def __call__(
+        self, message: Message, player: Player
+    ) -> Literal[False] | dict[str, Cell]:
+        if message.text in directions.keys():
+            dir = directions[message.text]
+            cell = await s.session.get(
+                Cell,
+                (player.region_id, player.x + dir[0], player.y + dir[1])
+            )
+            if not cell or (
+                self.cell_type and cell.type.slug != self.cell_type.slug
+            ):
+                return False
+            return {'dest': cell}
 
-async def movement(
-    message: Message, player: Player
-) -> Literal[False] | dict[str, Cell]:
-    if message.text in directions.keys():
-        dir = directions[message.text]
-        cell = await s.session.get(
-            Cell,
-            (player.region_id, player.x + dir[0], player.y + dir[1])
-        )
-        return {'dest': cell}
-
-    return False
-
-async def teleporting(
-    message: Message, player: Player
-) -> Literal[False] | dict[str, Cell]:
-    if message.text in directions.keys():
-        dir = directions[message.text]
-        cell = await s.session.get(
-            Cell,
-            (player.region_id, player.x + dir[0], player.y + dir[1])
-        )
-        if cell.type.emoji == '⭕':
-            return {'portal' : cell}
-
-    return False
+        return False

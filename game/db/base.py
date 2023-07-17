@@ -1,5 +1,8 @@
 from sqlalchemy import String
-from sqlalchemy.orm import DeclarativeBase, MappedAsDataclass
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    MappedAsDataclass
+)
 
 from game.db.types import str50
 

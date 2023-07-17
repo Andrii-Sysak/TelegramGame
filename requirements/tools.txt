@@ -1,0 +1,6 @@
+typing-extensions==4.4.0
+flake8==6.0.0
+mypy==1.4.1
+mypy-extensions==1.0.0
+isort==5.11.4
+types-PyYAML==6.0.12.2

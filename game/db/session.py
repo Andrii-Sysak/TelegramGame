@@ -1,13 +1,14 @@
-from contextvars import ContextVar
+import typing as t
 from functools import wraps
-from typing import Callable
+from contextvars import ContextVar
 
 from sqlalchemy.ext.asyncio import (
-    create_async_engine, async_sessionmaker,
-    AsyncSession
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine
 )
 
-_session = ContextVar[AsyncSession]('session', default=None)
+_session = ContextVar[AsyncSession]('session',)
 
 eng = create_async_engine(
     'postgresql+psycopg://admin:admin@bot-postgres:5432/game',
@@ -25,21 +26,26 @@ class _Session:
         return _session.get()
 
     @session.setter
-    def session(self, value: AsyncSession):
+    def session(self, value: AsyncSession) -> None:
         _session.set(value)
 
 
 s = _Session()
 
 
-def session(f: Callable):
+DECORATED_FUNCTION = t.TypeVar(
+    'DECORATED_FUNCTION', bound=t.Callable[..., t.Awaitable]
+)
+
+
+def session(f: DECORATED_FUNCTION) -> DECORATED_FUNCTION:
     @wraps(f)
-    async def decorator(*args, **kwargs):
+    async def decorator(*args: t.Any, **kwargs: t.Any) -> t.Any:
         s.session = s.maker()
         try:
-            await f(*args, **kwargs)
+            r = await f(*args, **kwargs)
             await s.session.commit()
         finally:
             await s.session.close()
-
-    return decorator
+        return r
+    return t.cast(DECORATED_FUNCTION, decorator)

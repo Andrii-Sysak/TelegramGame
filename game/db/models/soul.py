@@ -1,11 +1,13 @@
 from enum import StrEnum
 
+from sqlalchemy import String
 from sqlalchemy.orm import (
     Mapped,
-    mapped_column,
+    mapped_column
 )
+from sqlalchemy_utils import ChoiceType
 
-from game.db import Base
+from game.db.base import Base
 from game.db.types import int_pk
 
 
@@ -18,10 +20,12 @@ class BackgroundCells(StrEnum):
 
 class Soul(Base):
     __tablename__ = 'soul'
-    id: Mapped[int_pk] = mapped_column(init=True)
+
+    id: Mapped[int_pk] = mapped_column()
 
     view: Mapped[int] = mapped_column(default=5)
     background_emoji: Mapped[BackgroundCells] = mapped_column(
+        ChoiceType(BackgroundCells, impl=String(2)),
         default=BackgroundCells.default
     )
 

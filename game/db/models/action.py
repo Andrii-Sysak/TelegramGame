@@ -1,21 +1,21 @@
+import enum
 from datetime import datetime
-from enum import (
-    Enum,
-)
 
+from sqlalchemy import Integer
 from sqlalchemy.orm import (
     Mapped,
-    mapped_column,
+    mapped_column
 )
+from sqlalchemy_utils import ChoiceType
 
-from game.db import Base
+from game.db.base import Base
 from game.db.types import (
-    player_fk,
     int_pk,
+    player_fk
 )
 
 
-class ActionBusynessLevel(Enum):
+class ActionBusynessLevel(enum.IntEnum):
     none = 0
     low = 1
     medium = 3
@@ -26,12 +26,13 @@ class ActionBusynessLevel(Enum):
 class Action(Base):
     __tablename__ = 'action'
 
-    id: Mapped[int_pk]
+    id: Mapped[int_pk] = mapped_column(init=False)
 
-    player_id: Mapped[player_fk]
-    start_date: Mapped[datetime]
-    end_date: Mapped[datetime]
+    player_id: Mapped[player_fk] = mapped_column()
+    start_date: Mapped[datetime] = mapped_column()
+    end_date: Mapped[datetime] = mapped_column()
 
     busyness_level: Mapped[ActionBusynessLevel] = mapped_column(
+        ChoiceType(ActionBusynessLevel, impl=Integer()),
         default=ActionBusynessLevel.none
     )
