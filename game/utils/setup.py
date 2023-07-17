@@ -39,16 +39,17 @@ async def init_db() -> None:
         await create_mob('wolf', '🐺', {db_cells[0]: 10, db_cells[1]: 90}),
         await create_mob('bear', '🐻', {db_cells[0]: 50, db_cells[1]: 10})
     ]
-    test_region = Region(name='test', x=1, y=1)
     s.session.add_all(db_cells)
     s.session.add_all(mobs)
-    await s.session.flush()
+
+    test_region = Region(name='test', x=1, y=1)
     await fill_from_emoji_map(test_region, emoji_map)
     s.session.add(test_region)
     ice_region = Region(name='test', x=1, y=2)
-    await s.session.flush()
     await fill_from_emoji_map(ice_region, ice_emoji_map)
     s.session.add(ice_region)
+
+    await s.session.flush()
 
     print('succ')
 

@@ -42,7 +42,6 @@ def main() -> None:
     dp = Dispatcher()
     dp.startup.register(on_startup)
     dp.include_router(router)
-
     asyncio.run(init_db())
     if Config.c.updates_strategy is UpdateStrategy.webhook:
         SimpleRequestHandler(dispatcher=dp, bot=bot).register(

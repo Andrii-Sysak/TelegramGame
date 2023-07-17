@@ -27,6 +27,7 @@ movement_router = Router()
 
 
 @movement_router.message(MovementFilter(portal))
+@action(ActionBusynessLevel.blocking, lambda: Config.c.durations.movement)
 async def handle_movement_portal(message: Message, player: Player) -> None:
     await message.answer(
         f'Через {Config.c.durations.movement} секунд вас буде '

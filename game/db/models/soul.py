@@ -1,9 +1,11 @@
 from enum import StrEnum
 
+from sqlalchemy import String
 from sqlalchemy.orm import (
     Mapped,
     mapped_column
 )
+from sqlalchemy_utils import ChoiceType
 
 from game.db.base import Base
 from game.db.types import int_pk
@@ -23,6 +25,7 @@ class Soul(Base):
 
     view: Mapped[int] = mapped_column(default=5)
     background_emoji: Mapped[BackgroundCells] = mapped_column(
+        ChoiceType(BackgroundCells, impl=String(2)),
         default=BackgroundCells.default
     )
 

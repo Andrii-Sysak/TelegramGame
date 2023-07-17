@@ -11,8 +11,8 @@ int_pk = Annotated[int, mapped_column(primary_key=True)]
 region_fk = Annotated[int, mapped_column(
     ForeignKey('region.id', ondelete='CASCADE')
 )]
-cell_type_fk = Annotated[int, mapped_column(
-    ForeignKey('cell_type.id', ondelete='CASCADE')
+cell_type_fk = Annotated[str, mapped_column(
+    ForeignKey('cell_type.slug', ondelete='CASCADE')
 )]
 soul_fk = Annotated[int, mapped_column(
     ForeignKey('soul.id', ondelete='CASCADE')
