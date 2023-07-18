@@ -26,3 +26,6 @@ mob_fk = Annotated[int, mapped_column(
 continent_fk = Annotated[int, mapped_column(
     ForeignKey('continent.id', ondelete='CASCADE')
 )]
+planet_fk = Annotated[int, mapped_column(
+    ForeignKey('planet.id', ondelete='CASCADE')
+)]

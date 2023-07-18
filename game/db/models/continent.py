@@ -1,4 +1,7 @@
-import typing
+from typing import (
+    TYPE_CHECKING,
+    Optional,
+)
 
 from sqlalchemy.orm import (
     Mapped,
@@ -7,10 +10,16 @@ from sqlalchemy.orm import (
 )
 
 from game.db.base import Base
-from game.db.types import int_pk, str50
-if typing.TYPE_CHECKING:
-    from game.db.models import Region
-
+from game.db.types import (
+    int_pk,
+    str50,
+    planet_fk,
+)
+if TYPE_CHECKING:
+    from game.db.models import (
+        Planet,
+        Region,
+    )
 
 
 class Continent(Base):
@@ -18,8 +27,12 @@ class Continent(Base):
 
     id: Mapped[int_pk] = mapped_column(init=False)
     name: Mapped[str50] = mapped_column()
-    x: Mapped[int] = mapped_column()
-    y: Mapped[int] = mapped_column()
+
+    planet: Mapped[Optional['Planet']] = relationship(lazy='joined')
+    planet_id: Mapped[planet_fk] = mapped_column(
+        unique=False, nullable=True, default=None
+    )
+
     size: Mapped[int | None] = mapped_column(default=None)
 
     map: Mapped[list['Region']] = relationship(
