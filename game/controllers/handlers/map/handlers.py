@@ -103,6 +103,7 @@ async def handle_profile(message: Message, player: Player) -> None:
         f'{player.emoji} {player.name}\n'
         f'x-{player.x} y-{player.y}\n'
         f'🗺 - {player.region_id}\n'
+        f'🌁 - {player.region.continent_id}\n'
         f'❤️ - {player.health}\n'
         f'🗡 - {player.base_damage}\n'
         'Elements: \n'

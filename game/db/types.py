@@ -23,3 +23,6 @@ player_fk = Annotated[int, mapped_column(
 mob_fk = Annotated[int, mapped_column(
     ForeignKey('mob.id', ondelete='CASCADE')
 )]
+continent_fk = Annotated[int, mapped_column(
+    ForeignKey('continent.id', ondelete='CASCADE')
+)]
