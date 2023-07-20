@@ -11,7 +11,7 @@ from game.config import (
 from game.bl.cell import create_cell_type
 from game.db.base import Base
 from game.bl.region import fill_from_emoji_map
-from game.db.models import Region
+from game.db.models import Region, Continent, Planet
 from game.db.session import (
     s,
     eng,
@@ -42,10 +42,16 @@ async def init_db() -> None:
     s.session.add_all(db_cells)
     s.session.add_all(mobs)
 
-    test_region = Region(name='test', x=1, y=1)
+    planet = Planet(name='Bandershtat')
+    s.session.add(planet)
+
+    continent = Continent(name='def_cont', planet=planet)
+    s.session.add(continent)
+
+    test_region = Region(name='def_reg', x=1, y=1, continent=continent)
     await fill_from_emoji_map(test_region, emoji_map)
     s.session.add(test_region)
-    ice_region = Region(name='test', x=1, y=2)
+    ice_region = Region(name='ice_reg', x=1, y=2, continent=continent)
     await fill_from_emoji_map(ice_region, ice_emoji_map)
     s.session.add(ice_region)
 

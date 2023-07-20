@@ -11,35 +11,30 @@ from sqlalchemy.orm import (
 
 from game.db.base import Base
 from game.db.types import (
-    str50,
     int_pk,
-    continent_fk,
+    str50,
+    planet_fk,
 )
-
 if TYPE_CHECKING:
     from game.db.models import (
-        Cell,
-        Continent,
+        Planet,
+        Region,
     )
 
 
-class Region(Base):
-    __tablename__ = 'region'
+class Continent(Base):
+    __tablename__ = 'continent'
 
     id: Mapped[int_pk] = mapped_column(init=False)
     name: Mapped[str50] = mapped_column()
-    x: Mapped[int] = mapped_column()
-    y: Mapped[int] = mapped_column()
 
-    continent: Mapped[Optional['Continent']] = relationship(lazy='joined')
-    continent_id: Mapped[continent_fk] = mapped_column(
+    planet: Mapped[Optional['Planet']] = relationship(lazy='joined')
+    planet_id: Mapped[planet_fk] = mapped_column(
         unique=False, nullable=True, default=None
     )
 
-    size: Mapped[int | None] = mapped_column(default=None)
-
-    map: Mapped[list['Cell']] = relationship(
-        init=False,
+    regions: Mapped[list['Region']] = relationship(
+        init = False,
         cascade='all,delete',
         lazy='selectin',
     )
