@@ -33,9 +33,7 @@ class Continent(Base):
         unique=False, nullable=True, default=None
     )
 
-    size: Mapped[int | None] = mapped_column(default=None)
-
-    map: Mapped[list['Region']] = relationship(
+    regions: Mapped[list['Region']] = relationship(
         init = False,
         cascade='all,delete',
         lazy='selectin',

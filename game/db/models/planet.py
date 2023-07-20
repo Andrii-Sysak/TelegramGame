@@ -18,9 +18,7 @@ class Planet(Base):
     id: Mapped[int_pk] = mapped_column(init=False)
     name: Mapped[str50] = mapped_column()
 
-    size: Mapped[int | None] = mapped_column(default=None)
-
-    map: Mapped[list['Continent']] = relationship(
+    continents: Mapped[list['Continent']] = relationship(
         init=False,
         cascade='all,delete',
         lazy='selectin',
