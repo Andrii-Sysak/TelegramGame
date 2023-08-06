@@ -34,7 +34,7 @@ class Continent(Base):
     )
 
     regions: Mapped[list['Region']] = relationship(
-        init = False,
+        init=False,
         cascade='all,delete',
         lazy='selectin',
     )
