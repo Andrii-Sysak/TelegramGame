@@ -26,25 +26,6 @@ from game.controllers.handlers.map.filters import MovementFilter
 movement_router = Router()
 
 
-# @movement_router.message(MovementFilter())
-# @action(ActionBusynessLevel.blocking, lambda: Config.c.durations.movement)
-# async def handle_movement_map_end(message: Message, player: Player) -> None:
-#     await message.answer(
-#         f'Через {Config.c.durations.movement} секунд'
-#         f'ви перейдете в новий регіон'
-#     )
-#     if player.region_id == 1:
-#         await move_player(player, -player.x, -player.y, 2)
-#     else:
-#         await move_player(player, -player.x, -player.y, 1)
-#
-#     map = await render_map(player)
-#     asyncio.create_task(delay(
-#         message.answer(map, reply_markup=mov_keyboard.as_markup()),
-#         Config.c.durations.movement
-#     ))
-
-
 @movement_router.message(MovementFilter(portal))
 @action(ActionBusynessLevel.blocking, lambda: Config.c.durations.movement)
 async def handle_movement_portal(message: Message, player: Player) -> None:
