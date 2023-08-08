@@ -31,8 +31,10 @@ class MovementFilter(Filter):
                 y -= dir[1]
                 region = await s.session.scalar(
                     select(Region).where(
-                        and_(Region.x == player.region.x + dir[0],
-                             Region.y == player.region.y + dir[1])
+                        and_(
+                            Region.x == player.region.x + dir[0],
+                            Region.y == player.region.y + dir[1]
+                        )
                     )
                 )
                 if region is not None:
