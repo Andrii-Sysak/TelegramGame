@@ -51,8 +51,7 @@ async def handle_movement(message: Message, player: Player, dest: Cell) -> None:
             reply_markup=mov_keyboard.as_markup()
         )
         return
-
-    await move_player(player, dest.x, dest.y, player.region_id)
+    await move_player(player, dest.x, dest.y, dest.region_id)
     await message.answer(
         f'Чудово! Через {Config.c.durations.movement} секунд будеш на місці'
     )
