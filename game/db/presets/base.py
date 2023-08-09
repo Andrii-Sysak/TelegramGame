@@ -5,5 +5,5 @@ from dataclasses import dataclass
 class CellType:
     slug: str
     emoji: str
-    passable: bool = False
+    permeability: int = 50
     transparent: bool = False

@@ -45,7 +45,7 @@ async def handle_movement_portal(message: Message, player: Player) -> None:
 @movement_router.message(MovementFilter())
 @action(ActionBusynessLevel.blocking, lambda: Config.c.durations.movement)
 async def handle_movement(message: Message, player: Player, dest: Cell) -> None:
-    if not dest.type.passable:
+    if dest.type.permeability == 100:
         await message.answer(
             'ВИБАЧ, ТУДА НЕ МОНА.',
             reply_markup=mov_keyboard.as_markup()
@@ -53,7 +53,7 @@ async def handle_movement(message: Message, player: Player, dest: Cell) -> None:
         return
     await move_player(player, dest.x, dest.y, dest.region_id)
     await message.answer(
-        f'Чудово! Через {Config.c.durations.movement} секунд будеш на місці'
+        f'Чудово! Через {Config.c.durations.movement * dest.type.permeability/10} секунд будеш на місці'
     )
     map = await render_map(player)
     mob = await generate_mob(dest.type)

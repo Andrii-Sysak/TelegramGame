@@ -13,11 +13,14 @@ from game.db.models.cell import (
 async def create_cell_type(
     slug: str,
     emoji: str,
-    passable: bool,
+    permeability: int,
     transparent: bool = False
 ) -> CellType:
     cell = CellType(
-        slug=slug, emoji=emoji, passable=passable, transparent=transparent
+        slug=slug,
+        emoji=emoji,
+        permeability=permeability,
+        transparent=transparent
     )
     s.session.add(cell)
 

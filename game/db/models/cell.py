@@ -1,4 +1,7 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import (
+    ForeignKey,
+    CheckConstraint
+)
 from sqlalchemy.orm import (
     Mapped,
     relationship,
@@ -20,10 +23,13 @@ from game.db.models.region import Region
 
 class CellType(Base):
     __tablename__ = 'cell_type'
+    __tableargs__ = (
+        CheckConstraint("permeability >= 0 AND permeability <= 100")
+    )
 
     slug: Mapped[str50] = mapped_column(primary_key=True)
     emoji: Mapped[str50] = mapped_column()
-    passable: Mapped[bool] = mapped_column(default=False)
+    permeability: Mapped[int] = mapped_column(default=50)
     transparent: Mapped[bool] = mapped_column(default=False)
 
     def __hash__(self) -> int:
