@@ -31,7 +31,7 @@ async def init_db() -> None:
         await conn.run_sync(Base.metadata.create_all)
     db_cells = [
         await create_cell_type(
-            cell.slug, cell.emoji, cell.passable, cell.transparent
+            cell.slug, cell.emoji, cell.permeability, cell.transparent
         )
         for cell in cells
     ]

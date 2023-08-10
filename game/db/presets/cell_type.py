@@ -1,9 +1,9 @@
 from game.db.presets.base import CellType
 
-empty = CellType(slug='empty', emoji='⬜', passable=True)
-rock = CellType(slug='rock', emoji='🪨')
-portal = CellType(slug='portal', emoji='⭕', passable=True)
-plains = CellType(slug='plains', emoji='🦗', passable=True, transparent=True)
-ice = CellType(slug='ice', emoji='🧊', passable=True)
+empty = CellType(slug='empty', emoji='⬜', permeability=5)
+rock = CellType(slug='rock', emoji='🪨', permeability=100)
+portal = CellType(slug='portal', emoji='⭕', permeability=50)
+plains = CellType(slug='plains', emoji='🦗', permeability=30, transparent=True)
+ice = CellType(slug='ice', emoji='🧊', permeability=100)
 
 cells = (empty, rock, portal, plains, ice)
