@@ -28,12 +28,13 @@ movement_router = Router()
 
 @movement_router.message(MovementFilter(portal))
 @action(ActionBusynessLevel.blocking, lambda: Config.c.durations.movement)
-async def handle_movement_portal(message: Message, player: Player) -> None:
+async def handle_movement_portal(message: Message, player: Player, dest: Cell) -> None:
     await message.answer(
         f'Через {Config.c.durations.movement} секунд вас буде '
         f'відправлено в новий регіон',
     )
-    await move_player(player, 0, 0, 2)
+    t_data = dest.unique_data['teleportation_data']
+    await move_player(player, t_data['x'], t_data['y'], t_data['region_id'])
 
     map = await render_map(player)
     asyncio.create_task(delay(
