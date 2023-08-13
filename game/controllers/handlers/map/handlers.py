@@ -33,7 +33,7 @@ async def handle_movement_portal(message: Message, player: Player, dest: Cell) -
         f'Через {Config.c.durations.movement} секунд вас буде '
         f'відправлено в новий регіон',
     )
-    t_data = dest.unique_data['teleportation_data']
+    t_data = dest.properties['teleportation_data']
     await move_player(player, t_data['x'], t_data['y'], t_data['region_id'])
 
     map = await render_map(player)

@@ -54,7 +54,7 @@ ice_emoji_map = (
 unique_cell = {
     'ice_portal' : {
         'slug' : 'portal',
-        'unique_data' : {
+        'properties' : {
             'teleportation_data' : {
                 'region_id' : 2,
                 'x' : 0,
@@ -64,7 +64,7 @@ unique_cell = {
     },
     'forest_portal' : {
         'slug' : 'portal',
-        'unique_data' : {
+        'properties' : {
             'teleportation_data' : {
                 'region_id' : 1,
                 'x' : 0,

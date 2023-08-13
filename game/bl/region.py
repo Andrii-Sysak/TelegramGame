@@ -41,9 +41,9 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
         y = floor(size / 2) - index // size
         x = -floor(size / 2) + index % size
 
-        unique_data = {}
+        properties = {}
         if slug in unique_cell:
-            unique_data = unique_cell[slug]['unique_data']
+            properties = unique_cell[slug]['properties']
             slug = unique_cell[slug]['slug']
 
         cell_map.append(Cell(
@@ -51,7 +51,7 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
             x=x,
             y=y,
             cell_type_slug=slug,
-            unique_data=unique_data
+            properties=properties
         ))
 
     region.map = cell_map
