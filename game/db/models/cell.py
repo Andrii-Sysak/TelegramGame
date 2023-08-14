@@ -53,7 +53,7 @@ class Cell(Base):
         'type', 'emoji', init=False
     )
 
-    properties : Mapped[dict] = mapped_column(type_=JSON, init=True, default_factory=dict)
+    properties: Mapped[dict] = mapped_column(type_=JSON, init=True ,default_factory=dict)
 
     def __str__(self) -> str:
         return self.emoji

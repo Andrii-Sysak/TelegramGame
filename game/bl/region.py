@@ -15,8 +15,7 @@ from game.db.models import (
     CellType
 )
 from game.db.session import s
-from game.presets.test_region import unique_cell
-
+from game.db.presets.unique_cell import unique_cells
 
 async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
     emoji_map_list = made_list_map_from_string(emoji_map)
@@ -42,12 +41,12 @@ async def fill_from_emoji_map(region: Region, emoji_map: str) -> list[Cell]:
         x = -floor(size / 2) + index % size
 
         properties = {}
-        if slug in unique_cell:
-            properties = unique_cell[slug]['properties']
-            slug = unique_cell[slug]['slug']
+        if slug in unique_cells:
+            properties = unique_cells[slug].properties
+            slug = unique_cells[slug].slug
 
         cell_map.append(Cell(
-            region_id=1,
+            region_id=Region.id,
             x=x,
             y=y,
             cell_type_slug=slug,
@@ -74,7 +73,7 @@ def convert_emoji_to_slug_map(emoji_map_list: list, slugs: dict) -> list[str]:
     cell_slugs = {cell.emoji: cell.slug for cell in slugs.values()}
     emoji_map_slugs = []
     for cell in emoji_map_list:
-        if not cell in unique_cell:
+        if cell not in unique_cells:
             emoji_map_slugs.append(cell_slugs[cell] if not cell.isalpha() else cell)
             continue
         emoji_map_slugs.append(cell)
