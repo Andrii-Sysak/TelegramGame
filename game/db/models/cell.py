@@ -1,6 +1,7 @@
 from sqlalchemy import (
     ForeignKey,
-    CheckConstraint
+    CheckConstraint,
+    JSON
 )
 from sqlalchemy.orm import (
     Mapped,
@@ -16,10 +17,9 @@ from game.db.base import Base
 from game.db.types import (
     str50,
     int_pk,
-    cell_type_fk
+    cell_type_fk,
 )
 from game.db.models.region import Region
-
 
 class CellType(Base):
     __tablename__ = 'cell_type'
@@ -52,6 +52,8 @@ class Cell(Base):
     emoji: AssociationProxy[str] = association_proxy(
         'type', 'emoji', init=False
     )
+
+    properties: Mapped[dict] = mapped_column(type_=JSON, init=True ,default_factory=dict)
 
     def __str__(self) -> str:
         return self.emoji

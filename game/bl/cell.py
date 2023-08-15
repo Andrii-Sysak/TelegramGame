@@ -6,7 +6,7 @@ from sqlalchemy import (
 from game.db.session import s
 from game.db.models.cell import (
     Cell,
-    CellType
+    CellType,
 )
 
 
